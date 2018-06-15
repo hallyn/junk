@@ -59,7 +59,15 @@ func bootPartition(disk string) (bootDisk string, bootPart string, err error) {
 				if p.Name() == "boot" {
 					return d, fmt.Sprintf("%s%d", d, n), nil
 				} else if ! p.IsEmpty() {
-					fmt.Printf("Found %d: %s\n", n, p.Name())
+					var i int
+					for i = 0; i < 36; i++ {
+						if p.PartNameUTF16[2*i] == 0 &&
+							p.PartNameUTF16[2*i + 1] == 0 {
+								fmt.Printf("len %d\n", i)
+								break
+							}
+					}
+					fmt.Printf("Found %d: %s\n", n, p.Name()[:i])
 				}
 			}
 			continue
